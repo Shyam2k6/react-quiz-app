@@ -8,6 +8,7 @@ import NextQuestion from "./NextQuestion";
 import { useEffect, useReducer } from "react";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
+import Timer from "./Timer";
 
 const initialState = {
   questions: [],
@@ -15,12 +16,18 @@ const initialState = {
   index: 0,
   answer: null,
   points: 0,
+  secondsRemaining: 0,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "dataReceived":
-      return { ...state, questions: action.payload, status: "ready" };
+      return {
+        ...state,
+        questions: action.payload,
+        status: "ready",
+        secondsRemaining: state.questions.length * 20,
+      };
 
     case "dataFailed":
       return { ...state, status: "error" };
@@ -46,18 +53,26 @@ function reducer(state, action) {
     case "finish":
       return { ...state, status: "finished" };
 
+    case "timer":
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining === 0 ? "finished" : state.status,
+      };
+
     case "restart":
       return { ...initialState, status: "ready", questions: state.questions };
+
     default:
       throw new Error("Action Unknown");
   }
 }
 
 function App() {
-  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
-    reducer,
-    initialState,
-  );
+  const [
+    { questions, status, index, answer, points, secondsRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
   const numQuestions = questions.length;
   const maxPoints = questions.reduce((acc, val) => {
     return acc + val.points;
@@ -94,7 +109,7 @@ function App() {
               answer={answer}
               index={index}
             />
-
+            <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
             <NextQuestion
               dispatch={dispatch}
               answer={answer}
