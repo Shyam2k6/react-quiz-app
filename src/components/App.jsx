@@ -61,7 +61,12 @@ function reducer(state, action) {
       };
 
     case "restart":
-      return { ...initialState, status: "ready", questions: state.questions };
+      return {
+        ...initialState,
+        status: "ready",
+        questions: state.questions,
+        secondsRemaining: state.questions.length * 20,
+      };
 
     default:
       throw new Error("Action Unknown");
