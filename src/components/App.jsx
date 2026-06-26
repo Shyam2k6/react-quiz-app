@@ -10,6 +10,7 @@ import { useEffect, useReducer } from "react";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
 import Timer from "./Timer";
+import HighScore from "./HighScore";
 
 const initialState = {
   questions: [],
@@ -18,6 +19,7 @@ const initialState = {
   answer: null,
   points: 0,
   secondsRemaining: 0,
+  highScore: 0,
 };
 
 function reducer(state, action) {
@@ -50,10 +52,21 @@ function reducer(state, action) {
     }
 
     case "nextQuestion":
-      return { ...state, index: state.index + 1, answer: null };
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
+        highScore:
+          state.points > state.highScore ? state.points : state.highScore,
+      };
 
     case "finish":
-      return { ...state, status: "finished" };
+      return {
+        ...state,
+        status: "finished",
+        highScore:
+          state.points > state.highScore ? state.points : state.highScore,
+      };
 
     case "timer":
       return {
@@ -77,7 +90,7 @@ function reducer(state, action) {
 
 function App() {
   const [
-    { questions, status, index, answer, points, secondsRemaining },
+    { questions, status, index, answer, points, secondsRemaining, highScore },
     dispatch,
   ] = useReducer(reducer, initialState);
   const numQuestions = questions.length;
@@ -113,6 +126,7 @@ function App() {
         )}
         {status === "active" && (
           <>
+            <HighScore highScore={highScore} />
             <Progress
               numQuestions={numQuestions}
               index={index}
@@ -132,6 +146,7 @@ function App() {
               answer={answer}
               numQuestions={numQuestions}
               index={index}
+              points={points}
             />
           </>
         )}
