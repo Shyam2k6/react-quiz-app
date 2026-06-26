@@ -1,3 +1,4 @@
+import axios from "axios";
 import Header from "./Header";
 import Main from "./Main";
 import Loader from "./Loader";
@@ -35,7 +36,7 @@ function reducer(state, action) {
     case "start":
       return { ...state, status: "active" };
 
-    case "newAnswer":
+    case "newAnswer": {
       const question = state.questions.at(state.index);
 
       return {
@@ -46,6 +47,7 @@ function reducer(state, action) {
             ? state.points + question.points
             : state.points,
       };
+    }
 
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null };
@@ -84,10 +86,20 @@ function App() {
   }, 0);
 
   useEffect(function () {
-    fetch("http://localhost:8000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataReceived", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
+    // fetch("http://localhost:8000/questions")
+    //   .then((res) => res.json())
+    //   .then((data) => dispatch({ type: "dataReceived", payload: data }))
+    //   .catch(() => dispatch({ type: "dataFailed" }));
+    try {
+      async function fetchData() {
+        const response = await axios.get("http://localhost:8000/questions");
+        dispatch({ type: "dataReceived", payload: response.data });
+      }
+      fetchData();
+    } catch (error) {
+      dispatch({ type: "dataFailed" });
+      console.log(error.message);
+    }
   }, []);
 
   return (
