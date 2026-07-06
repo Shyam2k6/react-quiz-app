@@ -1,4 +1,3 @@
-import axios from "axios";
 import Header from "./Header";
 import Main from "./Main";
 import Loader from "./Loader";
@@ -11,6 +10,8 @@ import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
 import Timer from "./Timer";
 import HighScore from "./HighScore";
+
+import { data } from "../../data/questions";
 
 const initialState = {
   questions: [],
@@ -98,20 +99,25 @@ function App() {
     return acc + val.points;
   }, 0);
 
-  useEffect(function () {
-    // fetch("http://localhost:8000/questions")
-    //   .then((res) => res.json())
-    //   .then((data) => dispatch({ type: "dataReceived", payload: data }))
-    //   .catch(() => dispatch({ type: "dataFailed" }));
+  // useEffect(function () {
+  //   try {
+  //     async function fetchData() {
+  //       const response = await axios.get("http://localhost:8000/questions");
+  //       dispatch({ type: "dataReceived", payload: response.data });
+  //     }
+  //     fetchData();
+  //   } catch (error) {
+  //     dispatch({ type: "dataFailed" });
+  //     console.log(error.message);
+  //   }
+  // }, []);
+
+  useEffect(() => {
     try {
-      async function fetchData() {
-        const response = await axios.get("http://localhost:8000/questions");
-        dispatch({ type: "dataReceived", payload: response.data });
-      }
-      fetchData();
+      dispatch({ type: "dataReceived", payload: data.questions });
     } catch (error) {
+      console.error(error);
       dispatch({ type: "dataFailed" });
-      console.log(error.message);
     }
   }, []);
 
