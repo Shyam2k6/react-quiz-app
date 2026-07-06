@@ -1,12 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Codystar&display=swap");
 :root {
-  --color-darkest: #262a2e;
-  --color-dark: #495057;
-  --color-medium: #ced4da;
-  --color-light: #f1f3f5;
-
-  --color-theme: #1098ad;
-  --color-accent: #f76666;
+  --color-darkest: #f9fafb;
+  --color-dark: #e5e7eb;
+  --color-medium: #9ca3af;
+  --color-light: #f9fafb;
+  --color-theme: #2f7ed8;
+  --color-accent: #ef4444;
+  --surface: #111827;
+  --surface-muted: #1f2937;
+  --border: #374151;
 }
 
 * {
@@ -24,28 +26,41 @@ html {
 
 body {
   min-height: 100vh;
-  color: var(--color-light);
-  background-color: var(--color-darkest);
-  padding: 3.2rem;
+  color: var(--color-darkest);
+  background: #030712;
+  padding: 2.4rem 1.6rem;
 }
 
 .app {
+  max-width: 96rem;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 2rem;
 }
 
 .main {
-  width: 50rem;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding: 3.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
 }
 
 .app-header {
-  width: 66rem;
-  margin-bottom: 4rem;
+  width: min(100%, 72rem);
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1.4rem;
+  padding: 1.6rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
 }
 
 .error {
@@ -53,87 +68,98 @@ body {
   font-size: 1.6rem;
   font-weight: 500;
   padding: 2rem;
-  background-color: #495057;
-  border-radius: 100px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 999px;
 }
 
 img {
-  width: 12rem;
+  width: 8rem;
 }
 
 h1 {
   font-family: "Codystar";
-  font-size: 6rem;
+  font-size: clamp(2.4rem, 3.4vw, 3.2rem);
+  color: var(--color-darkest);
 }
 
 h2 {
-  font-size: 3.6rem;
-  margin-bottom: 2rem;
+  font-size: clamp(2.2rem, 3vw, 2.8rem);
+  margin-bottom: 1.2rem;
+  color: var(--color-darkest);
 }
 
 h3 {
-  font-size: 2.4rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 4rem;
+  margin-bottom: 2.6rem;
+  color: var(--color-medium);
 }
 
 h4 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 2.4rem;
+  margin-bottom: 2rem;
+  color: var(--color-darkest);
 }
 
 .start {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .progress {
-  margin-bottom: 4rem;
+  margin-bottom: 2.4rem;
   display: grid;
-  justify-content: space-between;
-  gap: 1.2rem;
-  grid-template-columns: auto auto;
-  font-size: 1.8rem;
+  gap: 0.8rem 1.2rem;
+  grid-template-columns: 1fr auto auto;
+  font-size: 1.6rem;
   color: var(--color-medium);
 }
 
 progress {
-  /* -webkit-appearance: none; */
   width: 100%;
-  height: 12px;
+  height: 1.2rem;
   grid-column: 1 / -1;
+  border: none;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 ::-webkit-progress-bar {
-  background-color: var(--color-medium);
-  border-radius: 100px;
+  background-color: var(--surface-muted);
+  border-radius: 999px;
 }
+
 ::-webkit-progress-value {
   background-color: var(--color-theme);
-  border-radius: 100px;
+  border-radius: 999px;
 }
 
 .btn {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: inherit;
-  color: inherit;
-  font-size: 2rem;
-  border: 2px solid var(--color-dark);
-  background-color: var(--color-dark);
-  padding: 1.2rem 2.4rem;
+  color: var(--color-light);
+  font-size: 1.7rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background-color: var(--color-theme);
+  padding: 1.2rem 2rem;
   cursor: pointer;
-  border-radius: 100px;
-  transition: 0.3s;
+  border-radius: 999px;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .btn:not([disabled]):hover {
-  background-color: var(--color-darkest);
-}
-
-.btn-option:not([disabled]):hover {
-  transform: translateX(1.2rem);
+  background-color: #2563b8;
+  transform: translateY(-1px);
 }
 
 .btn[disabled]:hover {
@@ -141,56 +167,70 @@ progress {
 }
 
 .btn-ui {
-  float: right;
+  margin-left: auto;
 }
 
 .options {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  margin-bottom: 3.2rem;
+  margin-bottom: 2.8rem;
 }
 
 .btn-option {
   width: 100%;
   text-align: left;
+  justify-content: flex-start;
+  padding: 1.4rem 1.8rem;
+  border-radius: 1.4rem;
+  background: var(--surface-muted);
+  color: var(--color-darkest);
+  border: 1px solid var(--border);
+}
+
+.btn-option:not([disabled]):hover {
+  background: #374151;
+  transform: translateX(2px);
 }
 
 .btn-option.correct {
   background-color: var(--color-theme);
-  border: 2px solid var(--color-theme);
+  border-color: var(--color-theme);
   color: var(--color-light);
 }
+
 .btn-option.wrong {
   background-color: var(--color-accent);
-  border: 2px solid var(--color-accent);
+  border-color: var(--color-accent);
   color: var(--color-darkest);
 }
 
 .answer {
-  transform: translateX(2rem);
+  transform: translateX(0.2rem);
 }
 
 .result {
-  background-color: var(--color-theme);
-  color: var(--color-light);
-  border-radius: 100px;
+  background: rgba(59, 130, 246, 0.14);
+  color: #bfdbfe;
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: 999px;
   text-align: center;
-  padding: 2rem 0;
-  font-size: 2rem;
-  font-weight: 500;
-  margin-bottom: 1.6rem;
+  padding: 1.8rem 2rem;
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin-bottom: 1.8rem;
 }
 
 .result span {
-  font-size: 2.2rem;
-  margin-right: 4px;
+  font-size: 2.1rem;
+  margin-right: 0.4rem;
 }
 
 .highscore {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
-  margin-bottom: 4.8rem;
+  margin-bottom: 2.4rem;
+  color: var(--color-medium);
 }
 
 .loader-container {
@@ -199,18 +239,22 @@ progress {
   align-items: center;
   margin-top: 4rem;
   gap: 1.6rem;
-
   color: var(--color-medium);
   font-size: 1.4rem;
 }
 
 .timer {
-  float: left;
-  font-size: 1.8rem;
-  color: var(--color-medium);
-  border: 2px solid var(--color-dark);
-  padding: 1.35rem 2.8rem;
-  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  font-size: 1.7rem;
+  color: var(--color-darkest);
+  border: 1px solid var(--border);
+  padding: 1rem 1.8rem;
+  border-radius: 999px;
+  margin-bottom: 1.6rem;
+  background: var(--surface-muted);
 }
 
 /* CREDIT: https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */

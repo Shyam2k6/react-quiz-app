@@ -11,8 +11,6 @@ import FinishScreen from "./FinishScreen";
 import Timer from "./Timer";
 import HighScore from "./HighScore";
 
-import { data } from "../../data/questions";
-
 const initialState = {
   questions: [],
   status: "loading",
@@ -30,7 +28,7 @@ function reducer(state, action) {
         ...state,
         questions: action.payload,
         status: "ready",
-        secondsRemaining: state.questions.length * 20,
+        secondsRemaining: action.payload.length * 20,
       };
 
     case "dataFailed":
@@ -82,6 +80,7 @@ function reducer(state, action) {
         status: "ready",
         questions: state.questions,
         secondsRemaining: state.questions.length * 20,
+        highScore: state.highScore,
       };
 
     default:
@@ -99,25 +98,17 @@ function App() {
     return acc + val.points;
   }, 0);
 
-  // useEffect(function () {
-  //   try {
-  //     async function fetchData() {
-  //       const response = await axios.get("http://localhost:8000/questions");
-  //       dispatch({ type: "dataReceived", payload: response.data });
-  //     }
-  //     fetchData();
-  //   } catch (error) {
-  //     dispatch({ type: "dataFailed" });
-  //     console.log(error.message);
-  //   }
-  // }, []);
-
-  useEffect(() => {
+  useEffect(function () {
     try {
-      dispatch({ type: "dataReceived", payload: data.questions });
+      async function fetchData() {
+        const response = await fetch("data/questions.json");
+        const { questions } = await response.json();
+        dispatch({ type: "dataReceived", payload: questions });
+      }
+      fetchData();
     } catch (error) {
-      console.error(error);
       dispatch({ type: "dataFailed" });
+      console.log(error.message);
     }
   }, []);
 
